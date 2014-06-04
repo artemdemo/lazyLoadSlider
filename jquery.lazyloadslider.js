@@ -15,6 +15,7 @@ $.fn.lazyloadslider = function(config) {
 		controllerPrev: '',
 		controllerNext: '',
 		loadingGif: '',
+		classOfLoadingGifContainer: '',
 		direction: 'ltr',
 		speed: '700',
 		itemWidth: 0		//because of lazy loading I need to get this property manually
@@ -48,11 +49,16 @@ $.fn.lazyloadslider = function(config) {
 		$child.css('width', config.itemWidth);
 		$child.attr('data-loaded', 'false');
 		//I'm adding loading gif to all elements, because in any case it doesn't loading each time, it's only one element
-		$child.append('<img src="'+ config.loadingGif +'" class="ll-loading" />');
+		if ( config.classOfLoadingGifContainer == '' ) {
+			$child.append('<img src="'+ config.loadingGif +'" class="ll-loading" />');
+		} else {
+			$child.find( config.classOfLoadingGifContainer ).append('<img src="'+ config.loadingGif +'" class="ll-loading" />');
+		}
 	};
 
 	//get visibel part of container. Width without padding.
 	container_inner_width = getInnerWidth($container);
+	var start_container_inner_width = container_inner_width;
 
 	var visible_items_num = Math.floor(container_inner_width / totalItemWidth);
 	var last_visible_item = visible_items_num;
@@ -72,10 +78,34 @@ $.fn.lazyloadslider = function(config) {
 			move_list('left');
 		}
 	});
+
 	$(config.controllerNext).click(function(){
 		if ( list_is_moving == false ) {
 			list_is_moving = true;
 			move_list('right');
+		}
+	});
+
+	$(window).resize(function(){
+		var container_inner_width = getInnerWidth($container);
+		if ( container_inner_width != start_container_inner_width) {
+			var left = $list.position().left;
+			last_visible_item = Math.floor( ( Math.abs(left) + $container.innerWidth() ) / config.itemWidth );
+			console.log( last_visible_item );
+			for (var i = 0; i < last_visible_item; i++) {
+				var $child = $( $list.children()[i] );
+				if ( $child.attr('data-loaded') == 'false' ) {
+					var $image = $child.find('.ll-image');
+					var newImg = new Image;
+					newImg.onload = function() {
+						$image.attr('src', this.src);
+						$child.find('.ll-loading').css('display','none');
+						$child.attr('data-loaded', 'true');
+					}
+					newImg.src = $image.attr('data-src');
+				}
+			}
+			start_container_inner_width = container_inner_width;
 		}
 	});
 
