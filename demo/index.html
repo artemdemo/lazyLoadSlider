@@ -5,14 +5,46 @@
 </head>
 <body>
 
-
+<div class="ll-list-wrap">
+	<div id="ll-prev-item">
+		&lt;
+	</div>
+	<div id="lazy-list" class="ll-list-container">
+		<ul class="ll-image-list">
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/01.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/02.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/03.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/04.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/05.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/06.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/07.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/08.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/09.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/10.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/11.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/12.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/13.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/14.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/15.jpg" /></li>
+			<li class="ll-image-list-item"><img class="ll-image" data-src="img/16.jpg" /></li>
+		</ul>
+	</div>
+	<div id="ll-next-item">
+		&gt;
+	</div>
+</div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="../jquery.lazyloadslider.js"></script>
 
 <script>
 	$(document).ready(function(){
-
+		$('#lazy-list').lazyloadslider({
+			controllerPrev: '#ll-prev-item',
+			controllerNext: '#ll-next-item',
+			loadingGif: 'img/loading.gif',
+			itemWidth: 150
+		});
 	});
 </script>
 
