@@ -12,8 +12,8 @@
 $.fn.lazyloadslider = function(config) {
 
 	var defConfig = {
-		controllerPrev: '',
-		controllerNext: '',
+		controllerMoveLeft: '',
+		controllerMoveRight: '',
 		loadingGif: '',
 		classOfLoadingGifContainer: '',
 		direction: 'ltr',
@@ -26,8 +26,23 @@ $.fn.lazyloadslider = function(config) {
 	var $list = $( $(this).children()[0] );
 
 	if ( $(this).children()[0] == undefined ) {
-		console.error('scrollinglist --> Error: There are NO LIST in container. Function has been aborted.');
+		console.error('lazyloadslider #'+ $container[0].id +' --> Error: There are NO LIST in container. Function has been aborted.');
 		return;
+	}
+
+	if( $( config.controllerMoveLeft ).length == 0 ) {
+		console.error('lazyloadslider #'+ $container[0].id +' --> Error: Can\'t find controllerMoveLeft.');
+		return;
+	}
+
+	if( $( config.controllerMoveRight ).length == 0 ) {
+		console.error('lazyloadslider #'+ $container[0].id +' --> Error: Can\'t find controllerMoveRight.');
+		return;
+	}
+
+	if ( config.itemWidth < 1 ) {
+		console.error('lazyloadslider #'+ $container[0].id +' --> Error: You need to set itemWidth');
+		return;		
 	}
 
 	$container.css('position', 'relative');
@@ -63,6 +78,12 @@ $.fn.lazyloadslider = function(config) {
 	var visible_items_num = Math.floor(container_inner_width / totalItemWidth);
 	var last_visible_item = visible_items_num;
 
+	if (config.direction == 'ltr') {
+		$( config.controllerMoveRight ).addClass('ll-disabled');
+	} else {
+		$( config.controllerMoveLeft ).addClass('ll-disabled');
+	}
+
 	for (var i = 0; i < visible_items_num; i++) {
 		var $child = $( $list.children()[i] );
 		var $image = $child.find('.ll-image');
@@ -72,16 +93,22 @@ $.fn.lazyloadslider = function(config) {
 		$child.attr('data-loaded', 'true')
 	}
 
-	$(config.controllerPrev).click(function(){
+	$(config.controllerMoveLeft).click(function(){
 		if ( list_is_moving == false ) {
 			list_is_moving = true;
+			//I assume that if I can move list left, therefore I can also remove class from right contoller
+			//In case I'm wrong it will be fixed inside of move_list() function
+			$( config.controllerMoveRight ).removeClass('ll-disabled');
 			move_list('left');
 		}
 	});
 
-	$(config.controllerNext).click(function(){
+	$(config.controllerMoveRight).click(function(){
 		if ( list_is_moving == false ) {
 			list_is_moving = true;
+			//I assume that if I can move list right, therefore I can also remove class from left contoller
+			//In case I'm wrong it will be fixed inside of move_list() function
+			$( config.controllerMoveLeft ).removeClass('ll-disabled');
 			move_list('right');
 		}
 	});
@@ -91,7 +118,6 @@ $.fn.lazyloadslider = function(config) {
 		if ( container_inner_width != start_container_inner_width) {
 			var left = $list.position().left;
 			last_visible_item = Math.floor( ( Math.abs(left) + $container.innerWidth() ) / config.itemWidth );
-			console.log( last_visible_item );
 			for (var i = 0; i < last_visible_item; i++) {
 				var $child = $( $list.children()[i] );
 				if ( $child.attr('data-loaded') == 'false' ) {
@@ -121,11 +147,13 @@ $.fn.lazyloadslider = function(config) {
 
 		if ( list_left_start_position < move ) {
 			list_is_moving = false;
+			$( config.controllerMoveRight ).addClass('ll-disabled');
 			return 0;
 		}
 
 		if ( listWidth + left < container_inner_width && direction == 'left' ) {
 			list_is_moving = false;
+			$( config.controllerMoveLeft ).addClass('ll-disabled');
 			return 0;
 		}
 
@@ -153,8 +181,6 @@ $.fn.lazyloadslider = function(config) {
 			}
 			newImg.src = $image.attr('data-src');
 		}
-
-		console.log( last_visible_item );
 
 		$list.animate({
 				left: move,
