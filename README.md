@@ -54,8 +54,8 @@
 ```js
 $(document).ready(function(){
 	$('#lazy-list').lazyloadslider({
-		controllerPrev: '#ll-prev-item',
-		controllerNext: '#ll-next-item',
+		controllerMoveLeft: '#ll-prev-item',
+		controllerMoveRight: '#ll-next-item',
 		loadingGif: 'img/loading.gif',
 		itemWidth: 150
 	});

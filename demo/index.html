@@ -1,13 +1,14 @@
 <html>
 <head>
 	<title>Demo lazyLoadSlider</title>
+	<link rel="stylesheet" type="text/css" href="css/fontello.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
 <div class="ll-list-wrap">
-	<div id="ll-prev-item">
-		&lt;
+	<div id="ll-prev-item" class="icon-left-open">
+		&nbsp;
 	</div>
 	<div id="lazy-list" class="ll-list-container">
 		<ul class="ll-image-list">
@@ -29,8 +30,8 @@
 			<li class="ll-image-list-item"><img class="ll-image" data-src="img/16.jpg" /></li>
 		</ul>
 	</div>
-	<div id="ll-next-item">
-		&gt;
+	<div id="ll-next-item" class="icon-right-open">
+		&nbsp;
 	</div>
 </div>
 
@@ -40,8 +41,8 @@
 <script>
 	$(document).ready(function(){
 		$('#lazy-list').lazyloadslider({
-			controllerPrev: '#ll-prev-item',
-			controllerNext: '#ll-next-item',
+			controllerMoveLeft: '#ll-prev-item',
+			controllerMoveRight: '#ll-next-item',
 			loadingGif: 'img/loading.gif',
 			itemWidth: 150
 		});

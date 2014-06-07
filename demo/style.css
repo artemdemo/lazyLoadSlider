@@ -7,29 +7,35 @@ body {
 }
 
 .ll-list-wrap {
-	width: 560px;
+	max-width: 1024px;
 	margin: 20px auto;
+}
+
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	color: #3A3A3A;
 }
 
 #ll-prev-item,
 #ll-next-item {
 	float: left;
-	border-radius: 10px;
-	width: 20px;
+	width: 3%;
 	height: 20px;
 	text-align: center;
-	line-height: 20px;
-	margin: 15% 7px;
-	color: #3A3A3A;
+	margin: 78px 0;
 	text-shadow: 1px 1px 1px #D1D1D1;
 	cursor: pointer;
-	background: #bebebe;
+}
+
+.ll-disabled,
+.ll-disabled:before {
+	color: #aaaaaa;
+	cursor: default !important;
 }
 
 .ll-list-container {
 	float: left;
 	overflow: hidden;
-	width: 460px;
+	width: 80%;
 	height: 160px;
 	padding: 10px 15px;
 	border: 1px dashed #aaaaaa;
